@@ -1,0 +1,106 @@
+import json
+import os
+import torch
+
+from collections import defaultdict
+from datasets import load_directory, load_file_spanner, get_encoded_states_with_values, get_num_relations
+from pathlib import Path
+from random import shuffle
+from torch.functional import Tensor
+from torch.utils.data.dataset import Dataset
+from typing import Dict, List, Tuple
+
+
+
+def balance_states_by_label(states: List[Tuple[Tensor, dict, List[dict]]], limit: int):
+    balanced_states = []
+    by_label = defaultdict(list)
+    for state in states:
+        by_label[state[0]].append(state)
+    label_limit = limit // len(by_label.keys())
+    for grouped_states in by_label.values():
+        shuffle(grouped_states)
+        balanced_states.extend(grouped_states[:label_limit])
+    for grouped_states in by_label.values():
+        remaining = limit - len(balanced_states)
+        balanced_states.extend(grouped_states[label_limit:label_limit + remaining])
+    return balanced_states
+
+
+class SupervisedDataset(Dataset):
+    def __init__(self, labeled_states: list, successor_labels: list = None):
+        self._states = labeled_states
+        self._successor_labels = successor_labels
+        assert len(self._states) == len(self._successor_labels)
+
+    def __len__(self):
+        return len(self._states)
+
+    def __getitem__(self, idx):
+        # Successor states are ignored as this is dataset is intended for supervised learning.
+        (cost, state, _) = self._states[idx]
+        return (state, cost)
+
+
+def load_dataset(path: Path, max_samples_per_file: int, max_samples: int, verify: bool = False, domain_name: str = None):
+    #is_spanner = 'spanner' in str(path) and 'spanner-bidirectional' not in str(path)
+    load_file_fn = None #if not is_spanner else load_file_spanner
+    labeled_states, predicates_with_goals = load_directory(path, max_samples_per_file, max_samples, filtering_fn=balance_states_by_label, load_file_fn=load_file_fn, verify_states=verify, domain_name=domain_name)
+    return labeled_states, predicates_with_goals
+
+
+def load_directory(path: str, max_samples_per_file: int, max_samples: int, filtering_fn=None, load_file_fn=None, verify_states: bool = False,domain_name : str = None):
+    labeled_states = list()
+    
+    with open(path + domain_name + ".json", 'r') as file:
+        data = json.load(file)
+    predicates = get_num_relations(data)
+    
+    for file in os.listdir(path):
+        if '.json' in file:
+            if file != domain_name + ".json":
+                with open (path + file, 'r') as f:
+                    instance = json.load(f)
+                labeled_states.extend(get_encoded_states_with_values(instance,predicates,max_samples_per_file= max_samples_per_file))
+    
+    if max_samples is not None and max_samples < len(labeled_states):
+        indices_selected_states = list(range(len(labeled_states)))
+        shuffle(indices_selected_states)
+        indices_selected_states = indices_selected_states[:max_samples]
+        labeled_states = [ labeled_states[i] for i in indices_selected_states ]
+
+    return labeled_states,predicates            
+    
+def collate(batch: List[Tuple[Dict[int, Tensor],Dict[int, Tensor], int]]):
+    """
+    Input: [(state, cost)]
+    Output: ((states, sizes), costs)
+    """
+    input = {}
+    sizes = []
+    offset = 0
+    target = []
+    inits = {}
+    for cost, state, init in batch:
+        max_size = 0
+        for predicate, values in state.items():
+            if values.nelement() > 0:
+                max_size = max(max_size, int(torch.max(values)) + 1)
+            if predicate not in input: input[predicate] = []
+            input[predicate].append(values + offset)
+            
+        for key,values in init.items():
+            if key not in inits: inits[key] = []
+            inits[key].append(values)
+        sizes.append(max_size)
+        offset += max_size
+        target.append(cost)
+    for predicate in input.keys():
+        input[predicate] = torch.cat(input[predicate]).view(-1)
+    for key in inits.keys():
+        inits[key] = torch.cat(inits[key]).view(-1)
+    if len(sizes) != 64:
+        pass
+    return ((input, sizes, inits), torch.stack(target))
+
+
