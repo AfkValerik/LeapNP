@@ -1,1 +1,3 @@
 This repository contains the LeapNP framework, which stands for *Learning and Planning Framework for Numeric Problems*. It is a lightweight framework fully implemented in python, that supports classical and numeric planning tasks, designed to ease the integration of deep learning methods.
+
+The dataset used and the code to generate the dataset can be found here: https://zenodo.org/records/17610181?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjRiY2QzMWQ5LTMxYTUtNGM2Mi04MWMwLTZhNjY2NTg5Y2Y3MyIsImRhdGEiOnt9LCJyYW5kb20iOiJmYzI4NGQxNjA4ZGM2ZTk0M2YzMzE0M2ViMjkwNjU3OCJ9.HWOxIwTGwcZhXsBYlZmh15chsNNud-f-ddgeLeTeZMX0uvLeyofELi6o54MtK11UtEGWvSTVRBWsJP7t3sGerA
