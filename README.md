@@ -1,2 +1,1 @@
-This is the repository for Numeric Planner Graph, a numeric planner that uses MP-GNN as heuristic function.
-The planner is inside the planner folder
+This repository contains the LeapNP framework, which stands for *Learning and Planning Framework for Numeric Problems*. It is a lightweight framework fully implemented in python, that supports classical and numeric planning tasks, designed to ease the integration of deep learning methods.
