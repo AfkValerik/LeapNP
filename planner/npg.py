@@ -1,6 +1,6 @@
 from fractions import Fraction
 from heuristic import gnnCondHeuristic, gnnValHeuristic, gnnBaseHeuristic, gnnAugmentedHeuristic, gnnCondAugmentedHeuristic
-from search_algorithms import BFS, MEBFS, Astar, MEAstar, WAstar, MEWAstar, GS
+from search_algorithms import BFS, MEBFS, Astar, MEAstar, WAstar, MEWAstar, GS, DBFS
 from data_structures import  encode_objects,standardizeGoals, standardizeActions,extractAtom, getPreconditionsMap, getPredicatesMap, getGoalsMap, extractInitValues, getAugmentedGoalsMap
 from search_problem import PlanningProblem
 import time
@@ -109,6 +109,8 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
                 search = MEBFS(heuristic)
             else:
                 search = BFS(heuristic)
+    elif search_algorithm == "dbfs":
+        search = DBFS(heuristic)
     #TODO: ensure that other search algorithms are updated according with the new data structures (probably not)
     elif search_algorithm == 'astar':
         if multiple_eval:
