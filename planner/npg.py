@@ -53,8 +53,8 @@ def set_global_seed(seed: int, strict: bool = False):
         torch.backends.cudnn.benchmark = True
 
 def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,network,gpus,aggregation,readout,multiple_eval,w = 1,seed=None, norm_conditions = "left"):
-    #if seed is not None and seed >= 0:
-     #   set_global_seed(seed)
+    if seed is not None and seed >= 0:
+        set_global_seed(seed)
     start = time.time()
     initial_state = problem.initial_values
     goals = problem.goals
