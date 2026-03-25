@@ -21,6 +21,11 @@ class NNHeuristic(Heuristic):
     def __valuateStates__(self,states, parent):
         raise Exception("Not implemented")
     
-    def __generalPolicy__(self,states,parent):
-        raise Exception("Not implemented")
+    def __generalPolicy__(self,states, parent = None):
+        self.__valuateStates__(states)
+        min = states.pop(-1)
+        for state in states:
+            if state.h < min.h:
+               min = state                    
+        return min
     

@@ -66,6 +66,7 @@ def map_keys_using_dict1(dict1: Dict[str, Any],
                 new_dict2[k2] = v2
             # altrimenti skip
     return new_dict2
+
 class GnnVal(NNHeuristic):
     def __init__(self, model, predicates, goal_predicates, objects, obj_encoding, num_conditions, goal_num_conditions,num_conditions_in_goal,encoding,goals,goal_encoding,constants):
         self.model = model
@@ -115,6 +116,7 @@ class GnnVal(NNHeuristic):
             input = collate(encoded_tensors,self.model.device)
         h = self.model(input)
 
+
         
         for state,h1 in zip(states,h):
             state.h = h1.item()
@@ -145,7 +147,22 @@ class GnnVal(NNHeuristic):
         #encoded_state = encoded_state|condition_state
         return encoded_state,bool_encoded_state
 
-        
+    def __calculate_state_memory_usage__(self,state):
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats()
+        baseline_memory = torch.cuda.memory_allocated(self.model.device)
+        self.__valuateState__(state)
+        peak_memory = torch.cuda.max_memory_allocated(self.model.device)
+        used_memory = peak_memory - baseline_memory
+        used_memory = used_memory / (1024.0 ** 2)  # Convert to MB
+        baseline_memory = baseline_memory / (1024.0 ** 2)  # Convert to MB
+        return used_memory, baseline_memory
+    
+    def __calculate_states_memory_usage__(self,states):
+        self.__valuateStates__(states)
+        peak_memory = torch.cuda.max_memory_allocated(self.model.device)
+        used_memory = peak_memory / (1024.0 ** 2)  # Convert to MB
+        return used_memory, len(states)
 
 def gnnHeuristic(path,predicates,goal_predicates,objects,obj_encoding,num_conditions,goal_num_conditions,num_conditions_in_goal,goals,aggregation,readout,gpus,state,constants):
     Model = __load_model__(aggregation, readout)

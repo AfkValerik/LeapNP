@@ -64,53 +64,6 @@ def extractNormalization(condition,parameters,norm_conditions,constants):
     
     return cond_list, False
 
-"""
-def extractSpecialGoals(condition):
-    # Estrai la soglia numerica a sinistra del <=
-    threshold_match = re.search(r"\(?\s*(\d+)\s*<=", condition)
-    threshold = int(threshold_match.group(1)) if threshold_match else None
-
-    # Estrai tutti i termini tipo coeff * x(farmN)
-    pattern = r'([0-9/\.]+)\s*\*\s*x\(farm(\d+)\)'
-    matches = re.findall(pattern, condition)
-    terms = [(float(Fraction(c)), f"x(farm{v})") for c, v in matches]
-
-    # Rimuovi i termini dei fluenti dalla stringa per isolare simboli extra
-    cleaned_expr = re.sub(pattern, '', condition)
-
-    # Trova i simboli extra (tipo 'cost', 'revenue') con i loro segni
-    symbol_exprs = re.findall(r'([\+\-]?)\s*([a-zA-Z_][a-zA-Z0-9_]*)', cleaned_expr)
-
-    # Inverti il segno di ogni simbolo extra per spostarli a sinistra
-    extras = []
-    for sign, name in symbol_exprs:
-        if name.startswith("x") or name.startswith("farm"):
-            continue  # ignora i fluenti
-        sign = sign.strip()
-        # Inverti segno: + → -, - → +
-        inverted_sign = '-' if sign == '+' else '+' if sign == '-' else '+'
-        extras.append(f"{inverted_sign} {name}")
-
-    # Costruzione di k_expr
-    if extras:
-        extra_expr = ' '.join(extras)
-        k_expr = f"{threshold} {extra_expr}".replace('+ -', '-').replace('- -', '+')
-    else:
-        k_expr = str(threshold)
-
-    # Costruzione relazioni binarie
-    binary_relations = []
-    for i in range(len(terms) - 1):
-        (c1, v1), (c2, v2) = terms[i], terms[i+1]
-        formula = f"{v1} + {v2} >= {k_expr}"
-        binary_relations.append({
-            "formula": formula,
-            "alpha": [c1, c2],
-            "k": k_expr
-        })
-
-    return binary_relations
-"""
 def extractSpecialGoals(condition):
     # Estrai la soglia numerica a sinistra del <=
     threshold_match = re.search(r"\(?\s*(\d+)\s*<=", condition)

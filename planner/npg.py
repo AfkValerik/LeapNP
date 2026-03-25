@@ -1,7 +1,7 @@
 from fractions import Fraction
-from heuristic import gnnCondHeuristic, gnnValHeuristic, gnnBaseHeuristic, gnnAugmentedHeuristic, gnnCondAugmentedHeuristic
-from search_algorithms import BFS, MEBFS, Astar, MEAstar, WAstar, MEWAstar, GS, DBFS
-from data_structures import  encode_objects,standardizeGoals, standardizeActions,extractAtom, getPreconditionsMap, getPredicatesMap, getGoalsMap, extractInitValues, getAugmentedGoalsMap
+from heuristic import gnnCondHeuristic, gnnValHeuristic, gnnBaseHeuristic, gnnAugmentedHeuristic, gnnCondAugmentedHeuristic, gnnGeneralHeuristic
+from search_algorithms import BFS, MEBFS, Astar, MEAstar, WAstar, MEWAstar, GS, DBFS, IWDBFS, AWBFS, KBFS, sAWBFS, bAWBFS
+from data_structures import  encode_objects,standardizeGoals, standardizeActions,extractAtom, getPreconditionsMap, getPredicatesMap, getGoalsMap, extractInitValues, getAugmentedGoalsMap, getGeneralGoalsMap
 from search_problem import PlanningProblem
 import time
 import os
@@ -9,21 +9,7 @@ import random
 import numpy as np
 import torch
 
-"""
-def set_global_seed(seed: int):
-    os.environ["PYTHONHASHSEED"] = str(seed)
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-    try:
-        torch.use_deterministic_algorithms(True,warn_only=True)
-        os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
-    except Exception:
-        pass
-"""
+
 def set_global_seed(seed: int, strict: bool = False):
     """
     set global seeds to ensure reproducibility.
@@ -51,10 +37,11 @@ def set_global_seed(seed: int, strict: bool = False):
         # Modalità "bilanciata": riproducibile ma veloce
         torch.backends.cudnn.deterministic = False
         torch.backends.cudnn.benchmark = True
+        print()
 
 def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,network,gpus,aggregation,readout,multiple_eval,w = 1,seed=None, norm_conditions = "left"):
-    #if seed is not None and seed >= 0:
-     #   set_global_seed(seed)
+    if seed is not None and seed >= 0:
+        set_global_seed(seed)
     start = time.time()
     initial_state = problem.initial_values
     goals = problem.goals
@@ -80,7 +67,10 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
         if heuristicName == "gnnval" or heuristicName == "gnncond":
             num_conditions_map, goal_num_conditions_map = getGoalsMap(goals,problem.all_objects,obj_encoding, norm_conditions = "left")
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
-            #preconditions_map = prova(preconditions_map)
+        
+        elif heuristicName == "gnngen":
+            augmented_goals_map = getGeneralGoalsMap(goals,problem.all_objects,obj_encoding, norm_conditions = "left")
+            preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
         elif heuristicName == "gnnaugmented" or heuristicName == "gnncondaugmented":
             num_conditions_map, goal_num_conditions_map, augmented_goals_map = getAugmentedGoalsMap(goals,problem.all_objects,obj_encoding, norm_conditions = "left")
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
@@ -90,6 +80,8 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
 
         if heuristicName == "gnncond":
             heuristic = gnnCondHeuristic(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,num_conditions_map,goal_num_conditions_map,check_goals,aggregation,readout,gpus,initial_state,constants)
+        elif heuristicName == "gnngen":
+            heuristic = gnnGeneralHeuristic(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,augmented_goals_map,check_goals,aggregation,readout,gpus,initial_state,constants)
         elif heuristicName == "gnnaugmented":
              heuristic = gnnAugmentedHeuristic(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,num_conditions_map,goal_num_conditions_map,augmented_goals_map,check_goals,aggregation,readout,gpus,initial_state,constants)
         elif heuristicName == "gnnval":
@@ -111,6 +103,16 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
                 search = BFS(heuristic)
     elif search_algorithm == "dbfs":
         search = DBFS(heuristic)
+    elif search_algorithm == "iwdbfs":
+        search = IWDBFS(heuristic)
+    elif search_algorithm == "awbfs":
+        search = AWBFS(heuristic)
+    elif search_algorithm == "sawbfs":
+        search = sAWBFS(heuristic)
+    elif search_algorithm == "bawbfs":
+        search = bAWBFS(heuristic)
+    elif search_algorithm == "kbfs":
+        search = KBFS(heuristic)
     #TODO: ensure that other search algorithms are updated according with the new data structures (probably not)
     elif search_algorithm == 'astar':
         if multiple_eval:
@@ -129,6 +131,7 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
     path,goal = search.solve(problem)
     end = time.time()
     print("solution found, time: ", (end - start))
+    print("max memory used:", torch.cuda.max_memory_allocated() / (1024.0 ** 2), " MB")
     return path,goal,search.expanded,search.evaluated,path.count("\n")
         
 

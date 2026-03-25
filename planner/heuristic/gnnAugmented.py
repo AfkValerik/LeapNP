@@ -91,6 +91,23 @@ class GnnAugmented(NNHeuristic):
             encoded_state = extract_augmented_goals_pairs(state,key,value,encoded_state)
         #encoded_state = encoded_state|condition_state
         return encoded_state,bool_encoded_state
+    
+    def __calculate_state_memory_usage__(self,state):
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats()
+        baseline_memory = torch.cuda.memory_allocated(self.model.device)
+        self.__valuateState__(state)
+        peak_memory = torch.cuda.max_memory_allocated(self.model.device)
+        used_memory = peak_memory - baseline_memory
+        used_memory = used_memory / (1024.0 ** 2)  # Convert to MB
+        baseline_memory = baseline_memory / (1024.0 ** 2)  # Convert to MB
+        return used_memory, baseline_memory
+    
+    def __calculate_states_memory_usage__(self,states):
+        self.__valuateStates__(states)
+        peak_memory = torch.cuda.max_memory_allocated(self.model.device)
+        used_memory = peak_memory / (1024.0 ** 2)  # Convert to MB
+        return used_memory, len(states)
 
         
 

@@ -17,9 +17,9 @@ class GSState(State):
     def __neighbors__ (self, actions):
         neighbors = list()
         for action in actions:
-            if checkActionPreconditions(self,action):
+            if action.checkPreconditions(self.values):
                 new_values = self.values.copy()
-                applyActionEffects(new_values,action)
+                action.applyEffects(new_values)
                 neighbors.append(GSState(new_values,self.g + 1, 0, self.id, action))
         return neighbors
     
@@ -32,13 +32,14 @@ class GS(SearchAlgorithm):
         Solver (_type_): This is an implementation for the Solver class
     """
     def __init__(self, heuristic = lambda x,y : 0, w = 1) -> None:
+        super().__init__()
         self.heuristic = heuristic
         self.w = w
         
     def extract_solution(self, current_state, closed_list) -> str:
         path = ""
         goal = current_state.values
-        path = str(closed_list)    
+        path = str(closed_list).replace(", ","\n") + "\n"
         return path,goal
     
     
@@ -49,16 +50,15 @@ class GS(SearchAlgorithm):
         self.reset_expanded()
         while (running):
 
-            self.update_expanded()
             if (problem.isGoal(n)):
                 return self.extract_solution(n,actions)
             
+            self.update_expanded()
             toEvaluate = problem.getSuccessors(n)
             
             if len(toEvaluate) > 0:
                 n = self.heuristic.__generalPolicy__(toEvaluate,n)
-                n.__updatef__()
-                actions.append(n.action.action_expr.name)
+                actions.append(n.action.name)
             else:
                 running = False
                 
