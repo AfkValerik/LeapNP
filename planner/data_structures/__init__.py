@@ -10,5 +10,5 @@ from .extended_encoded_state import extract_goal_condition_object_pairs, extract
 from .atom import extractAtom
 from .state import extractInitValues
 from .augmented_goal_conditions import getAugmentedGoalsMap, extract_augmented_goals_pairs, extract_augmented_goals_objects
-from .general_goal_conditions import getGeneralGoalsMap, extract_general_goals_objects, extract_general_goals_pairs
+from .general_conditions import getGeneralGoalsMap, extract_general_goals_objects, extract_general_goals_pairs, getGeneralPreconditionsMap
 

@@ -27,7 +27,10 @@ class RelationMessagePassing(nn.Module):
                 output_size = 0
  
             if (input_size > 0) and (output_size > 0):
-                mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.ReLU(), nn.Linear(input_size, output_size, True))
+                if num_input > 0:
+                    mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.LeakyReLU(), nn.Linear(input_size, output_size, True))
+                else:
+                    mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.ReLU(), nn.Linear(input_size, output_size, True))
                 self.num_inputs.update({relation : num_input})
             else:
                 mlp = None

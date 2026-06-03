@@ -72,7 +72,7 @@ class GnnGeneral(NNHeuristic):
         bool_encoded_state = encode_state(state,self.predicates,bool_encoded_state)
         
         for key,value in self.num_conditions.items():
-            encoded_state = extract_condition_object_pairs(state,key,value,encoded_state)
+            encoded_state = extract_general_goals_pairs(state,key,value,encoded_state)
         
         for key,value in self.augmented_goals.items():
             encoded_state = extract_general_goals_pairs(state,key,value,encoded_state)
@@ -81,7 +81,7 @@ class GnnGeneral(NNHeuristic):
 
         
 
-def gnnHeuristic(path,predicates,goal_predicates,objects,obj_encoding,num_conditions,augmented_goals_map,goals,aggregation,readout,gpus,state,constants):
+def gnnHeuristic(path,predicates,goal_predicates,objects,obj_encoding,num_conditions,augmented_goals_map,goals,aggregation,readout,gpus,constants):
     Model = __load_model__(aggregation, readout)
     if gpus > 0 and torch.cuda.is_available():
         device = torch.device('cuda')

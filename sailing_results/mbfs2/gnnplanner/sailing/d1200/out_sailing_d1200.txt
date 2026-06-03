@@ -1,0 +1,4 @@
+Grounding Time: 13
+Aibr Preprocessing
+|F|:1
+|X|:2

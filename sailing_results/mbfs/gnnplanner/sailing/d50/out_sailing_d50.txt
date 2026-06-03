@@ -1,0 +1,64 @@
+Grounding Time: 14
+Aibr Preprocessing
+|F|:1
+|X|:2
+grounding done, time:  0.36987972259521484
+multiple evaluation enabled
+
+running with GPU
+initial setup done, time:  0.3601057529449463
+solution found, time:  2.114088773727417
+max memory used: 13.05419921875  MB
+goal found: {'x(b0)': -12.0, 'y(b0)': 63.0, 'd(p0)': 50.0, 'saved(p0)': True}
+
+ expanded nodes: 43
+
+ evaluated nodes: 260
+
+ path to goal:
+ go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+save_person_b0_p0
+
+
+ Plan-length: 43

@@ -1,0 +1,83 @@
+Grounding Time: 10
+Aibr Preprocessing
+|F|:7
+|X|:5
+grounding done, time:  0.7253658771514893
+multiple evaluation enabled
+
+running with GPU
+initial setup done, time:  0.24631214141845703
+solution found, time:  1.8593533039093018
+max memory used: 10.70556640625  MB
+goal found: {'balls_num(r1)': 0.0, 'balls_num(r2)': 5.0, 'balls_num(r3)': 5.0, 'balls_num(r4)': 5.0, 'balls_num(r5)': 5.0, 'pos_robby(r2)': False, 'free(g1)': True, 'free(g2)': True, 'pos_robby(r1)': False, 'pos_robby(r3)': False, 'pos_robby(r4)': True, 'pos_robby(r5)': False}
+
+ expanded nodes: 62
+
+ evaluated nodes: 263
+
+ path to goal:
+ move_r2_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r3
+drop_r3_g1
+drop_r3_g2
+move_r3_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r5
+drop_r5_g2
+move_r5_r4
+drop_r4_g1
+move_r4_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r2
+drop_r2_g2
+move_r2_r3
+drop_r3_g1
+move_r3_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r5
+drop_r5_g2
+drop_r5_g1
+move_r5_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r3
+drop_r3_g2
+drop_r3_g1
+move_r3_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r5
+drop_r5_g2
+drop_r5_g1
+move_r5_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r4
+drop_r4_g1
+drop_r4_g2
+move_r4_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r2
+drop_r2_g2
+drop_r2_g1
+move_r2_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r2
+drop_r2_g1
+drop_r2_g2
+move_r2_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r4
+drop_r4_g2
+drop_r4_g1
+
+
+ Plan-length: 62

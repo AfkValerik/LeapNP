@@ -1,0 +1,10 @@
+planner,domain,problem,runtime,solved,quality
+gnnplanner,sailing,d1000,350.01,False,n/a
+gnnplanner,sailing,d1050,39.76,False,n/a
+gnnplanner,sailing,d1100,350.0,False,n/a
+gnnplanner,sailing,d1150,42.61,False,n/a
+gnnplanner,sailing,d1200,350.0,False,n/a
+gnnplanner,sailing,d1300,350.0,False,n/a
+gnnplanner,sailing,d1400,350.0,False,n/a
+gnnplanner,sailing,d1500,350.0,False,n/a
+gnnplanner,sailing,d950,36.31,False,n/a

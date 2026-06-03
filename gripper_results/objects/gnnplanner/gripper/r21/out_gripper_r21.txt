@@ -1,0 +1,120 @@
+Grounding Time: 20
+Aibr Preprocessing
+|F|:23
+|X|:21
+grounding done, time:  2.6650636196136475
+multiple evaluation enabled
+
+running with GPU
+initial setup done, time:  0.6790461540222168
+solution found, time:  6.159937620162964
+max memory used: 10.8232421875  MB
+goal found: {'balls_num(r1)': 0.0, 'balls_num(r2)': 1.0, 'balls_num(r3)': 1.0, 'balls_num(r4)': 1.0, 'balls_num(r5)': 1.0, 'balls_num(r6)': 1.0, 'balls_num(r7)': 1.0, 'balls_num(r8)': 1.0, 'balls_num(r9)': 1.0, 'balls_num(r10)': 1.0, 'balls_num(r11)': 1.0, 'balls_num(r12)': 1.0, 'balls_num(r13)': 1.0, 'balls_num(r14)': 1.0, 'balls_num(r15)': 1.0, 'balls_num(r16)': 1.0, 'balls_num(r17)': 1.0, 'balls_num(r18)': 1.0, 'balls_num(r19)': 1.0, 'balls_num(r20)': 1.0, 'balls_num(r21)': 1.0, 'pos_robby(r2)': False, 'free(g1)': True, 'free(g2)': True, 'pos_robby(r1)': False, 'pos_robby(r3)': False, 'pos_robby(r4)': False, 'pos_robby(r5)': False, 'pos_robby(r6)': False, 'pos_robby(r7)': False, 'pos_robby(r8)': True, 'pos_robby(r9)': False, 'pos_robby(r10)': False, 'pos_robby(r11)': False, 'pos_robby(r12)': False, 'pos_robby(r13)': False, 'pos_robby(r14)': False, 'pos_robby(r15)': False, 'pos_robby(r16)': False, 'pos_robby(r17)': False, 'pos_robby(r18)': False, 'pos_robby(r19)': False, 'pos_robby(r20)': False, 'pos_robby(r21)': False}
+
+ expanded nodes: 200
+
+ evaluated nodes: 1596
+
+ path to goal:
+ move_r2_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r14
+drop_r14_g2
+drop_r14_g1
+move_r14_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r14
+drop_r14_g1
+drop_r14_g2
+move_r14_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r14
+drop_r14_g1
+drop_r14_g2
+move_r14_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r10
+drop_r10_g1
+move_r10_r1
+pick_r1_g1
+move_r1_r16
+drop_r16_g1
+move_r16_r1
+pick_r1_g1
+move_r1_r17
+drop_r17_g1
+move_r17_r1
+pick_r1_g1
+move_r1_r15
+drop_r15_g2
+move_r15_r1
+pick_r1_g2
+move_r1_r13
+drop_r13_g2
+move_r13_r5
+drop_r5_g1
+move_r5_r1
+pick_r1_g1
+pick_r1_g2
+move_r1_r2
+drop_r2_g2
+move_r2_r7
+drop_r7_g1
+move_r7_r1
+pick_r1_g2
+pick_r1_g1
+move_r1_r3
+drop_r3_g1
+move_r3_r1
+pick_r1_g1
+move_r1_r19
+drop_r19_g2
+move_r19_r1
+pick_r1_g2
+move_r1_r18
+drop_r18_g1
+move_r18_r21
+drop_r21_g2
+move_r21_r3
+pick_r3_g2
+move_r3_r11
+drop_r11_g2
+move_r11_r14
+pick_r14_g1
+move_r14_r4
+drop_r4_g1
+move_r4_r1
+pick_r1_g2
+move_r1_r3
+drop_r3_g2
+move_r3_r1
+pick_r1_g2
+move_r1_r20
+drop_r20_g2
+move_r20_r3
+pick_r3_g1
+move_r3_r12
+drop_r12_g1
+move_r12_r14
+pick_r14_g1
+move_r14_r9
+drop_r9_g1
+move_r9_r14
+pick_r14_g1
+move_r14_r3
+drop_r3_g1
+move_r3_r14
+pick_r14_g2
+move_r14_r6
+drop_r6_g2
+move_r6_r14
+pick_r14_g2
+move_r14_r8
+drop_r8_g2
+
+
+ Plan-length: 99

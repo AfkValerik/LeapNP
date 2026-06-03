@@ -1,0 +1,97 @@
+Grounding Time: 14
+Aibr Preprocessing
+|F|:1
+|X|:2
+grounding done, time:  0.4037973880767822
+multiple evaluation enabled
+
+running with GPU
+initial setup done, time:  0.32357144355773926
+solution found, time:  3.9485552310943604
+max memory used: 13.05419921875  MB
+goal found: {'x(b0)': -10.5, 'y(b0)': 112.5, 'd(p0)': 100.0, 'saved(p0)': True}
+
+ expanded nodes: 76
+
+ evaluated nodes: 458
+
+ path to goal:
+ go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_west_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+go_north_east_b0
+save_person_b0_p0
+
+
+ Plan-length: 76
