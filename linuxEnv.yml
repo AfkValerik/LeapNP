@@ -1,0 +1,19 @@
+name: linuxEnv
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.12
+  - ipykernel
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.8
+  - pip
+  - setuptools<67.0.0
+  - pip:
+    - unified-planning==1.1.0.92.dev1
+    - Levenshtein
+    - pytorch-lightning

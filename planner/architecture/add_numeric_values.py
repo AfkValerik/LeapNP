@@ -16,7 +16,6 @@ class RelationMessagePassing(nn.Module):
         self.hidden_size = hidden_size
         self.relation_modules = nn.ModuleList()
         self.num_inputs = {}
-        #for relation, arity,num_inputs in relations:
         for relation, arity, num_input in relations:
             assert relation == len(self.relation_modules)
             if arity > 0:
@@ -27,10 +26,11 @@ class RelationMessagePassing(nn.Module):
                 output_size = 0
  
             if (input_size > 0) and (output_size > 0):
-                if num_input > 0:
-                    mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.LeakyReLU(), nn.Linear(input_size, output_size, True))
-                else:
-                    mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.ReLU(), nn.Linear(input_size, output_size, True))
+                #TODO: this is for future ideas to better handle negative numeric values
+                #if num_input > 0:    
+                    #mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.LeakyReLU(), nn.Linear(input_size, output_size, True))
+                #else:
+                mlp = nn.Sequential(nn.Linear(input_size, input_size, True), nn.ReLU(), nn.Linear(input_size, output_size, True))
                 self.num_inputs.update({relation : num_input})
             else:
                 mlp = None
