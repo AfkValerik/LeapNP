@@ -12,6 +12,14 @@
             "program": "${file}",
             "console": "integratedTerminal",
                 "args": ["--o", "C:\\Users\\vaker\\OneDrive\\Desktop\\valerio\\code\\LeapNP\\pddl\\hydropower\\domain.pddl", "--p", "C:\\Users\\vaker\\OneDrive\\Desktop\\valerio\\code\\LeapNP\\pddl\\hydropower"]
-        }
+        },
+        {
+            "name": "Python Debugger: counters with h^n",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+                "args": ["--o", "C:\\Users\\vaker\\OneDrive\\Desktop\\valerio\\code\\LeapNP\\pddl\\counters\\domain.pddl", "--f", "C:\\Users\\vaker\\OneDrive\\Desktop\\valerio\\code\\LeapNP\\pddl\\counters\\pfile1.pddl", "--model", "C:\\Users\\vaker\\OneDrive\\Desktop\\valerio\\code\\LeapNP\\models\\hn\\counters.ckpt"]
+        },
     ]
 }
