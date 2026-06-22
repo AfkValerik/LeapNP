@@ -16,7 +16,7 @@ To run the framework with GNN-based heuristics, you also have to specify the mod
 python main.py --o path/to/domain.pddl --f path/to/problem.pddl --model path/to/model.ckpt
 ```
 ### Additional Arguments
-- "--h" specifies the heuristic to use. Default is "gnnval", the gnn heuristic from the AAAI paper. Currently there arent symbolic heuristics implemented.
+- "--h" specifies the heuristic to use. Default is "gnnval", the gnn heuristic from the AAAI paper. The models trained are in the models directory, under the hn subdirectory. The models under hgeneral are meant to be used with the gnngeneral heuristic, but i recommend not using it since it is still under development and might be bugged. Currently there arent symbolic heuristics implemented.
 - "--s" specifies the search algorithm to use. Default is "bfs". (Which is actually Greedy Best First Search).
 - "--multiple_eval" is set to True, all successors are evaluated in a single batch, which can speed up the evaluation of the heuristic. Default is True. this should always be used with Gnn heuristics.
 - "--seed" specifies the random seed to use for reproducibility. Default is 17.
