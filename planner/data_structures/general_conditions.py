@@ -1,3 +1,4 @@
+from data_structures.actions import ORPrecondition
 from data_structures.extended_conditions import  checkIfNumeric, standardizeGoal, extractPreconditionRecursive, normalize_conditions
 from data_structures.goals import Goal
 import re
@@ -20,7 +21,7 @@ class Segments:
         self.alpha = alpha
         self.atoms = atoms
 
-def getGeneralGoalsMap(goals,objects,obj_encoding):
+def getGeneralGoalsMap(goals,objects,obj_encoding, negatives):
     augmented_goals_map = dict()
     for goal in goals:
         
@@ -37,8 +38,16 @@ def getGeneralGoalsMap(goals,objects,obj_encoding):
                 for j in goal.atoms:
                     if j.name in i["fluents"]:
                         atoms.append(j)
+                if not negatives:
+                    i["alpha"] = [abs(value) for value in i["alpha"]]
                 segments.append(Segments(atoms,i["alpha"]))
             specialGoal = AugmentedGoal(goal.goal_expr,goal.atoms,goal.bool_goal,segments,conditions[1][0]["k"],conditions[1][0]["kfluents"])
+            if not negatives:
+                if len(specialGoal.kfluents) > 0:
+
+                    specialGoal.k = specialGoal.k.replace("-", "+").strip()
+                else:
+                    specialGoal.k = abs(specialGoal.k)
             if conditions[0][0] not in augmented_goals_map:
                 augmented_goals_map.setdefault(conditions[0][0],[])
             augmented_goals_map[conditions[0][0]].append(specialGoal)
@@ -49,23 +58,28 @@ def getGeneralGoalsMap(goals,objects,obj_encoding):
 def getGeneralPreconditionsMap(actions,objects,obj_encoding):
     preconditions_map = dict()
     for action in actions:
-        for precondition in action.preconditions:
-            if not precondition.is_bool:
-                conditions = extractNormalization(precondition.name,objects)
-                for atom in precondition.atoms:
-                    atom.addObjectEncoding(obj_encoding)
-                segments = list()
-                for i in conditions[1][0]["segments"]:
-                    atoms = list()
-                    for j in precondition.atoms:
-                        if j.name in i["fluents"]:
-                            atoms.append(j)
-                    segments.append(Segments(atoms,i["alpha"]))
-                specialPrecondition = AugmentedGoal(precondition.name,precondition.atoms,precondition.is_bool,segments,conditions[1][0]["k"],conditions[1][0]["kfluents"])
-                if conditions[0][0] not in preconditions_map:
-                    preconditions_map.setdefault(conditions[0][0],[])
-                if specialPrecondition not in  preconditions_map[conditions[0][0]]:
-                    preconditions_map[conditions[0][0]].append(specialPrecondition)
+        for extraction in action.preconditions:
+            if isinstance(extraction, ORPrecondition):
+                preconditions = extraction.conditions
+            else:
+                preconditions = [extraction]
+            for precondition in preconditions:
+                if not precondition.is_bool:
+                    conditions = extractNormalization(precondition.name,objects)
+                    for atom in precondition.atoms:
+                        atom.addObjectEncoding(obj_encoding)
+                    segments = list()
+                    for i in conditions[1][0]["segments"]:
+                        atoms = list()
+                        for j in precondition.atoms:
+                            if j.name in i["fluents"]:
+                                atoms.append(j)
+                        segments.append(Segments(atoms,i["alpha"]))
+                    specialPrecondition = AugmentedGoal(precondition.name,precondition.atoms,precondition.is_bool,segments,conditions[1][0]["k"],conditions[1][0]["kfluents"])
+                    if conditions[0][0] not in preconditions_map:
+                        preconditions_map.setdefault(conditions[0][0],[])
+                    if specialPrecondition not in  preconditions_map[conditions[0][0]]:
+                        preconditions_map[conditions[0][0]].append(specialPrecondition)
                     
     return preconditions_map
 

@@ -10,10 +10,6 @@ class Precondition:
         self.name = name
         self.atoms = atoms
         self.is_bool = is_bool
-        #if precondition_map != None:
-        #    self.normalized = precondition_map[name][0]
-        #else:
-        #    self.normalized = None
         
     def __eq__(self, value):
         return self.name == value.name
@@ -57,6 +53,17 @@ class Precondition:
                         newAtoms.append(atom)
                         break
             self.atoms = newAtoms
+            
+class ORPrecondition(Precondition):
+    def __init__(self, name, atoms, is_bool,conditions):
+        super().__init__(name, atoms, is_bool)
+        self.conditions = conditions
+        
+    def checkPrecondition(self, state):
+        for condition in self.conditions:
+            if condition.checkPrecondition(state):
+                return True
+        return False
         
 class Effect:
     def __init__(self, name, atoms,lhs, rhs, is_effect_bool,operator):
@@ -135,10 +142,20 @@ def standardizeaction(action):
     else:
         toLoop = action.preconditions
     for precondition in toLoop:
-        precondition_fluents = list()
-        is_bool_wrapper = [True]
-        standardizePreconditionRecursive(precondition,precondition_fluents,is_bool_wrapper)
-        preconditions.append(Precondition(str(precondition),precondition_fluents,is_bool_wrapper[0]))
+        #added the code to handle or preconditions
+        if "or" in str(precondition):
+            or_conditions = list()
+            for condition in precondition.args:
+                condition_fluents = list()
+                is_bool_wrapper = [True]
+                standardizePreconditionRecursive(condition,condition_fluents,is_bool_wrapper)
+                or_conditions.append(Precondition(str(condition),condition_fluents,is_bool_wrapper[0]))
+            preconditions.append(ORPrecondition(str(precondition),[],False,or_conditions))
+        else:
+            precondition_fluents = list()
+            is_bool_wrapper = [True]
+            standardizePreconditionRecursive(precondition,precondition_fluents,is_bool_wrapper)
+            preconditions.append(Precondition(str(precondition),precondition_fluents,is_bool_wrapper[0]))
     for effect in action.effects:
         effect_fluents = list()
         is_effect_bool = True
