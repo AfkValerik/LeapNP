@@ -112,8 +112,8 @@ class ENHSPGrounder(Engine,CompilerMixin):
             
     def ground_problem(self,domain,problem,objects,fluents,init_values):
         updomain =open(domain,"r").read()
-        #base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP_GROUNDER/jpddlplus.jar'), '-o', domain, '-f', problem, '-gro', 'internal']
-        base_command = ['java', '-jar', '/home/vborelli/LeapNP/planner/data_structures/grounders/ENHSP_GROUNDER/jpddlplus.jar', '-o', domain, '-f', problem, '-gro', 'internal']
+        base_command = ['java', '-jar', pkg_resources.resource_filename(__name__, 'ENHSP_GROUNDER/jpddlplus.jar'), '-o', domain, '-f', problem, '-gro', 'internal']
+        #base_command = ['java', '-jar', '/home/vborelli/LeapNP/planner/data_structures/grounders/ENHSP_GROUNDER/jpddlplus.jar', '-o', domain, '-f', problem, '-gro', 'internal']
         out = " ".join(map(str,base_command))
         os.system(out)
         #self.add_numeric_assignments()
