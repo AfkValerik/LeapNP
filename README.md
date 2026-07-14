@@ -17,7 +17,7 @@ python main.py --o path/to/domain.pddl --f path/to/problem.pddl --model path/to/
 ```
 ### Additional Arguments
 - "--h" specifies the heuristic to use. Default is "gnnval", the gnn heuristic from the AAAI paper. The models trained are in the models directory, under the hn subdirectory. The models under hgeneral are meant to be used with the gnngeneral heuristic, but i recommend not using it since it is still under development and might be bugged (the farmland and fo_farmland domain use the "gnnaugmented" heuristic instead of "gnnval", it is the version that implements the extension to more general numeric goals, as in the AAAI paper. To run them use "--h gnnaugmented" as heuristic with the models for farmland and fo_farmland in the hn subdirectory). Currently there arent symbolic heuristics implemented.
-- "--s" specifies the search algorithm to use. Default is "bfs". (Which is actually Greedy Best First Search).
+- "--s" specifies the search algorithm to use. Default is "bfs" (Which is actually Greedy Best First Search). To run AWBFS, just put "awbfs" as the search algorithm.
 - "--multiple_eval" is set to True, all successors are evaluated in a single batch, which can speed up the evaluation of the heuristic. Default is True. this should always be used with Gnn heuristics.
 - "--seed" specifies the random seed to use for reproducibility. Default is 17.
 - "--grounder" specifies the grounder to use. Default is "enhsp", all the grounders implemented in the unified planning framework should work, but they might generate some errors since they have not been thoroughly tested.
