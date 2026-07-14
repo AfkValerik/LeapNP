@@ -96,9 +96,9 @@ def gnnHeuristic(path,predicates,goal_predicates,objects,obj_encoding,num_condit
 
 def __load_model__(aggregation,readout):
     try:
-        Model = g_model_classes[(aggregation, readout, 'supervised_optimal',False,False)]
+        Model = g_model_classes[(aggregation, readout, 'supervised_optimal',True,False)]
     except KeyError:
-        raise NotImplementedError(f"No model found for {(aggregation, readout, 'supervised_optimal',False,False)} combination")
+        raise NotImplementedError(f"No model found for {(aggregation, readout, 'supervised_optimal',True,False)} combination")
     return Model
 
 
