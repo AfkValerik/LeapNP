@@ -111,32 +111,26 @@ def flatten_list(nested_list):
             flattened_list.append(element)
     return flattened_list
 
-def collate(batch: List[Tuple[Dict[int, Tensor],Dict[int, Tensor]]], device):
+def collate(batch: List[Dict[str, Tensor]], device):
     """
     Input: [state]
-    Output: (states, sizes, inits)
+    Output: (states, sizes)
     """
     input = {}
     sizes = []
-    inits = {}
     offset = 0
-    for state,init in batch:
+    for state in batch:
         max_size = 0
         for predicate, values in state.items():
             if values.nelement() > 0:
                 max_size = max(max_size, int(torch.max(values)) + 1)
             if predicate not in input: input[predicate] = []
             input[predicate].append(values + offset)
-        for key,values in init.items():
-            if key not in inits: inits[key] = []
-            inits[key].append(values)
         sizes.append(max_size)
         offset += max_size
     for predicate in input.keys():
         input[predicate] = torch.cat(input[predicate]).view(-1).to(device=device, non_blocking=True)
-    for key in inits.keys():
-        inits[key] = torch.cat(inits[key]).view(-1).to(device=device, non_blocking=True)
-    return (input, sizes,inits)
+    return (input, sizes)
 
 
     
