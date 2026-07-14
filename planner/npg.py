@@ -68,10 +68,10 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
             num_conditions_map, goal_num_conditions_map = getGoalsMap(goals,problem.all_objects,obj_encoding, norm_conditions = "left")
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
         
-        elif heuristicName == "gnngen":
+        elif heuristicName == "gnngen" or heuristicName == "booleanPolicy":
             augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding,negatives = True)
             preconditions_map = getGeneralPreconditionsMap(groundedActions,problem.all_objects,obj_encoding)
-        elif heuristicName == "gnngoals" or heuristicName == "booleanPolicy":
+        elif heuristicName == "gnngoals":
             augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding,negatives = False)
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
         elif heuristicName == "gnnaugmented" or heuristicName == "gnncondaugmented":
