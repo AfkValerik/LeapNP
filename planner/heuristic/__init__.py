@@ -5,4 +5,5 @@ from .gnnAugmented import gnnHeuristic as gnnAugmentedHeuristic
 from .gnnCondAugmented import gnnHeuristic as gnnCondAugmentedHeuristic
 from .gnnGeneral import gnnHeuristic as gnnGeneralHeuristic
 from .gnnGeneralGoals import gnnHeuristic as gnnGeneralGoalsHeuristic
+from .gnnBooleanPolicy import gnnHeuristic as gnnBooleanPolicy
 

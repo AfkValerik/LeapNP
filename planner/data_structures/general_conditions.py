@@ -309,6 +309,37 @@ def extract_general_goals_pairs(state,key,values,encoded_state):
             
     return encoded_state
 
+def extract_boolean_goals_pairs(state,key,values,encoded_state):
+    encoded_state.setdefault(key,[])
+    encoded_state.setdefault("false_" + key,[])
+    for value in values:
+        obj_list = list()
+        k = value.k
+        kfluents = value.kfluents
+        if kfluents:
+            for kf in kfluents:
+                if kf in state:
+                    k = k.replace(kf, str(state[kf]))
+            k = eval(k)
+        #TODO: check if this stands with atoms without objects
+        if value.checkGoal(state):
+                for segment in value.segments:
+                    obj_list = list()
+                    for atom in segment.atoms:
+                        for obj in atom.objects:
+                            if obj.encoding_id not in obj_list:
+                                obj_list.append(obj.encoding_id)
+                                encoded_state[key].append(obj.encoding_id)
+        else:
+            for segment in value.segments:    
+                obj_list = list()
+                for atom in segment.atoms:
+                    for obj in atom.objects:
+                        if obj.encoding_id not in obj_list:
+                            obj_list.append(obj.encoding_id)
+                            encoded_state["false_" + key].append(obj.encoding_id)    
+    return encoded_state
+
 
 def extract_general_goals_objects(state,key,values,encoded_state):
     encoded_state.setdefault(key,[])

@@ -1,1 +1,2 @@
 from .enhsp_grounder import ENHSPGrounder
+from .enhsp_grounder_objects import ENHSPGrounder as ENHSPGrounderObjects

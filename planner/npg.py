@@ -1,5 +1,5 @@
 from fractions import Fraction
-from heuristic import gnnCondHeuristic, gnnValHeuristic, gnnBaseHeuristic, gnnAugmentedHeuristic, gnnCondAugmentedHeuristic, gnnGeneralHeuristic, gnnGeneralGoalsHeuristic
+from heuristic import gnnCondHeuristic, gnnValHeuristic, gnnBaseHeuristic, gnnAugmentedHeuristic, gnnCondAugmentedHeuristic, gnnGeneralHeuristic, gnnGeneralGoalsHeuristic, gnnBooleanPolicy
 from search_algorithms import BFS, MEBFS, Astar, MEAstar, WAstar, MEWAstar, GS, DBFS, IWDBFS, AWBFS, KBFS, sAWBFS, bAWBFS
 from data_structures import  encode_objects,standardizeGoals, standardizeActions,extractAtom, getPreconditionsMap, getPredicatesMap, getGoalsMap, extractInitValues, getAugmentedGoalsMap, getGeneralGoalsMap, getGeneralPreconditionsMap
 from search_problem import PlanningProblem
@@ -69,10 +69,10 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
         
         elif heuristicName == "gnngen":
-            augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding)
+            augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding,negatives = True)
             preconditions_map = getGeneralPreconditionsMap(groundedActions,problem.all_objects,obj_encoding)
-        elif heuristicName == "gnngoals":
-            augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding)
+        elif heuristicName == "gnngoals" or heuristicName == "booleanPolicy":
+            augmented_goals_map = getGeneralGoalsMap(check_goals,problem.all_objects,obj_encoding,negatives = False)
             preconditions_map = getPreconditionsMap(groundedProblem.map_back_action_instance.keywords["map"],obj_encoding,initial_state, norm_conditions = "left")
         elif heuristicName == "gnnaugmented" or heuristicName == "gnncondaugmented":
             num_conditions_map, goal_num_conditions_map, augmented_goals_map = getAugmentedGoalsMap(goals,problem.all_objects,obj_encoding, norm_conditions = "left")
@@ -93,6 +93,8 @@ def setup_problem(dom,problem,groundedProblem,search_algorithm,heuristicName,net
             heuristic = gnnValHeuristic(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,num_conditions_map,goal_num_conditions_map,check_goals,aggregation,readout,gpus,initial_state,constants)
         elif heuristicName == "gnncondaugmented":
             heuristic = gnnCondAugmentedHeuristic(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,num_conditions_map,goal_num_conditions_map,augmented_goals_map,check_goals,aggregation,readout,gpus,initial_state,constants)
+        elif heuristicName == "booleanPolicy":
+            heuristic = gnnBooleanPolicy(network,predicates_map,goal_predicates_map,objects,obj_encoding,preconditions_map,augmented_goals_map,check_goals,aggregation,readout,gpus,constants) 
         elif heuristicName == "gnnbase":
             heuristic = gnnBaseHeuristic(network,predicates_map,goal_predicates_map,objects,encode_objects(objects),goals,aggregation,readout,gpus,initial_state,constants)
 
